@@ -12,7 +12,31 @@ export default function SummaryScreen({ navigation }) {
         >
             <Text style={styles.cardTitle}>Movement</Text>
         </TouchableOpacity>
-    
+
+      {/* Energy Card */}
+      <TouchableOpacity 
+        style={styles.card}
+        onPress={() => navigation.navigate('EnergyScreen')}
+        >
+            <Text style={styles.cardTitle}>Energy Expenditure</Text>
+        </TouchableOpacity>
+
+      {/* Sleep Card */}
+      <TouchableOpacity 
+        style={styles.card}
+        onPress={() => navigation.navigate('SleepScreen')}
+        >
+            <Text style={styles.cardTitle}>Sleep Cycle</Text>
+        </TouchableOpacity>
+
+      {/* Workouts Card */}
+      <TouchableOpacity 
+        style={styles.card}
+        onPress={() => navigation.navigate('WorkoutsScreen')}
+        >
+            <Text style={styles.cardTitle}>Workouts</Text>
+        </TouchableOpacity>
+
     </View>
   );
 }
