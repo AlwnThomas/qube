@@ -6,7 +6,7 @@ export default function MovementDetails() {
   // Sample data, replace with real movement data
   const movementData = {
     stepGoal: 10000,
-    steps: 11234,
+    steps: 40000,
     stepLength: 0.762, // in meters
     time: 45, // in minutes
   };
@@ -18,6 +18,8 @@ export default function MovementDetails() {
   // Calculate the percentage of the goal achieved
   const percentage = (movementData.steps/ movementData.stepGoal) * 100;
   const overflowPercentage = percentage > 100 ? percentage - 100 : 0;
+  const DoubleOverflowPercentage = percentage > 200 ? percentage - 200 : 0;
+  const TripleOverflowPercentage = percentage > 300 ? percentage - 300 : 0;
 
   // Ring configuration
   const radius = 80; // Radius of the circle
@@ -25,6 +27,8 @@ export default function MovementDetails() {
   const circumference = 2 * Math.PI * radius; // Circumference of the circle
   const offset = circumference - (percentage / 100) * circumference; // Offset for the stroke
   const overflowOffset = circumference - (overflowPercentage / 100) * circumference;
+  const DoubleOverflowOffset = circumference - (DoubleOverflowPercentage / 100) * circumference;
+  const TripleOverflowOffset = circumference - (TripleOverflowPercentage / 100) * circumference;
   const size = (radius + strokeWidth) * 2;
 
   return (
@@ -49,7 +53,7 @@ export default function MovementDetails() {
           cx={radius + strokeWidth}
           cy={radius + strokeWidth}
           r={radius}
-          stroke="tomato"
+          stroke="#00ff4c"
           strokeWidth={strokeWidth}
           fill="none"
           strokeDasharray={circumference}
@@ -58,13 +62,13 @@ export default function MovementDetails() {
           transform="rotate(-90 100 100)" // Start the stroke from 90 degrees
         />
 
-        {/* Overflow Circle (Red part above 100%) */}
+        {/* Overflow Circle (Green part above 100%) */}
         {overflowPercentage > 0 && (
         <Circle
           cx={radius + strokeWidth} // Adjusted for center
           cy={radius + strokeWidth} // Adjusted for center
           r={radius}
-          stroke="red"
+          stroke="#00cf3e"
           strokeWidth={strokeWidth}
           fill="none"
           strokeDasharray={circumference}
@@ -72,7 +76,39 @@ export default function MovementDetails() {
           strokeLinecap="butt"
           transform="rotate(-90 100 100)"
         />
-        )}            
+        )}  
+
+        {/* Overflow Circle (Deep Green part above 200%) */}
+        {overflowPercentage > 0 && (
+        <Circle
+          cx={radius + strokeWidth} // Adjusted for center
+          cy={radius + strokeWidth} // Adjusted for center
+          r={radius}
+          stroke="#00a331"
+          strokeWidth={strokeWidth}
+          fill="none"
+          strokeDasharray={circumference}
+          strokeDashoffset={DoubleOverflowOffset}
+          strokeLinecap="butt"
+          transform="rotate(-90 100 100)"
+        />
+        )}     
+
+        {/* Overflow Circle (Deeper Green part above 300%) */}
+        {overflowPercentage > 0 && (
+        <Circle
+          cx={radius + strokeWidth} // Adjusted for center
+          cy={radius + strokeWidth} // Adjusted for center
+          r={radius}
+          stroke="#006e21"
+          strokeWidth={strokeWidth}
+          fill="none"
+          strokeDasharray={circumference}
+          strokeDashoffset={TripleOverflowOffset}
+          strokeLinecap="butt"
+          transform="rotate(-90 100 100)"
+        />
+        )}      
          </Svg>
 
       {/* Percentage Text */}
@@ -130,7 +166,9 @@ const styles = StyleSheet.create({
   percentageText: {
     fontSize: 18,
     fontWeight: '600',
-    marginTop: 20,
+    position: 'absolute',
+    top: '45%',
+    left: '45%',
     color: '#333',
   },
 });
