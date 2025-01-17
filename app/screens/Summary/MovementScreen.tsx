@@ -7,10 +7,14 @@ export default function MovementDetails() {
   // Sample data, replace with real movement data
   const movementData = {
     stepGoal: 10000,
-    steps: 600,
+    steps: 10000,
     stepLength: 0.762, // in meters
     time: 45, // in minutes
   };
+
+  // Sample data, replace with real-time Calories burned estimation (simple estimate)
+  const caloriesPerStep = 0.04;  // Example estimation, varies based on weight, etc.
+  const caloriesBurned = movementData.steps * caloriesPerStep;
 
   // Sample data, to be replaced with live data
   const last7DaysData = [
@@ -20,7 +24,7 @@ export default function MovementDetails() {
     { day: 'Thu', steps: 7000 },
     { day: 'Fri', steps: 9100 },
     { day: 'Sat', steps: 8500 },
-    { day: 'Sun', steps: 19200 },
+    { day: 'Sun', steps: 1200 },
   ];
 
   // Live Date updates
@@ -69,6 +73,12 @@ export default function MovementDetails() {
   const TripleOverflowOffset = circumference - (TripleOverflowPercentage / 100) * circumference;
   const size = (radius + strokeWidth) * 2;
 
+  // Determine the dynamic left position based on the length of the calories burned number
+  const caloriesLeft = caloriesBurned.toFixed().length > 3 ? 42 : (caloriesBurned.toFixed().length > 2 ? 50 : 55);
+
+  // Determine dynamic right positioning for Distance
+  const distanceRight = distance.toFixed(2).length > 4 ? 36 : (distance.toFixed(2).length > 3 ? 46 : 50);
+
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View>
@@ -76,6 +86,22 @@ export default function MovementDetails() {
         <Text style={styles.StepData}>{movementData.steps}</Text>
         <Text style={[styles.StepMain, { fontSize: 15 }]}>{currentDate}</Text>
       </View>
+
+      {/* Distance (KM) on Right Side */}
+      <Text style={[styles.cardValue, styles.rightText, { right: distanceRight}]}>
+        {distance.toFixed(2)}
+      </Text>
+      <Text style={[styles.cardValue, styles.rightText, { paddingTop: 25, fontSize: 10, right: 34}]}>
+        Kilometers
+      </Text>
+
+      {/* Calories Burned on Left Side */}
+      <Text style={[styles.cardValue, styles.leftText, { left: caloriesLeft}]}>
+        {caloriesBurned.toFixed()}
+      </Text>
+      <Text style={[styles.cardValue, styles.leftText,{paddingTop:25, fontSize: 10, left: 32}]}>
+        Kcal Burned
+      </Text>
 
       <View style={styles.ring}>
         {/* Circle Ring Graph */}
@@ -180,11 +206,6 @@ export default function MovementDetails() {
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Distance Walked (KM)</Text>
-        <Text style={styles.cardValue}>{distance.toFixed(2)} km</Text>
-      </View>
-
-      <View style={styles.card}>
         <Text style={styles.cardTitle}>Walking Speed (KM/h)</Text>
         <Text style={styles.cardValue}>{walkingSpeed.toFixed(2)} km/h</Text>
       </View>
@@ -206,6 +227,7 @@ const styles = StyleSheet.create({
   ring: {
     alignItems: 'center',
     margin: 20,
+    position: 'relative',
   },
   card: {
     width: '100%',
@@ -248,10 +270,24 @@ const styles = StyleSheet.create({
   percentageText: {
     fontSize: 18,
     fontWeight: '600',
-    position: 'absolute',
-    top: '45%',
-    left: '45%',
+    position: 'relative',
+    top: '-50%',
     color: '#333',
   },
+  rightText: {
+    position: 'absolute',
+    top: '22.5%',
+    right: 45, // Position on the right side of the ring
+    color: '#333',
+    fontSize: 22,
+    fontWeight: '600',
+  },
+  leftText: {
+    position: 'absolute',
+    top: '22.5%',
+    left: 65, // Position on the left side of the ring
+    color: '#333',
+    fontSize: 22,
+    fontWeight: '600',
+  },
 });
-
