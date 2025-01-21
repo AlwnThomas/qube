@@ -183,12 +183,13 @@ export default function MovementDetails() {
         <Text style={styles.percentageText}>{Math.round(percentage)}%</Text>
       </View>
 
+      //Bar Chart for Average Visualisation
       <View style={styles.card}>
         <Text style={styles.averageSteps}>Average</Text>
         <Text style={[styles.StepData, { fontSize: 30, paddingTop: 10 }]}>{averageSteps}</Text>
         <Svg height={200} width="100%">
           {last7DaysData.map((item, index) => {
-            const barHeight = (item.steps / movementData.stepGoal) * 100; // Normalize bar height
+            const barHeight = (item.steps / movementData.stepGoal) * 100; // Normalise bar height
             return (
               <React.Fragment key={index}>
                 {/* Bar */}
