@@ -7,7 +7,7 @@ export default function MovementDetails() {
   // Sample data, replace with real movement data
   const movementData = {
     stepGoal: 10000,
-    steps: 10000,
+    steps: 14000,
     stepLength: 0.762, // in meters
     time: 45, // in minutes
   };
