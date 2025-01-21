@@ -5,21 +5,33 @@ import Svg, { Rect, Text as SvgText } from 'react-native-svg';
 
 export default function EnergyScreen() {
 
-const caloriesBurned = 250;
-const restingEnergy = 1500;
-const totalEnergy = 1750;
+const originalActiveData = [0,340,0,1560,0];
 
 //Example data for active energy, replace with realtime
 const activeData = {
   labels: ["12am", "6am", "12pm", "6pm", "12am"],
   datasets: [
     {
-      data: [0, 150, 0, 100, 0].reduce((acc, curr) =>{ //Replace with realtime data
-        const lastValue = acc[acc.length - 1] || 0;
-        acc.push(curr + lastValue);
-        return acc;
-      }, []), //Cumulative data
+      data: originalActiveData,
       color: (opacity = 1) => `rgba(255, 99, 132, ${opacity})`,
+      strokeWidth: 2,
+    },
+  ],
+};
+
+//Calories Burned as cumulative from activedata
+const caloriesBurned = originalActiveData.reduce((acc, value) => acc + value, 0);
+const restingEnergy = 1500;
+const totalEnergy = caloriesBurned + restingEnergy;
+const energyFraction = totalEnergy / 4;
+
+//Example data for total energy per hours
+const newActiveData = {
+  labels: activeData.labels, // Keep the same labels
+  datasets: [
+    {
+      data: activeData.datasets[0].data.map(value => value + energyFraction), // Add energyFraction to each value
+      color: (opacity = 1) => `rgba(99, 132, 255, ${opacity})`, // Different color if needed
       strokeWidth: 2,
     },
   ],
@@ -69,17 +81,17 @@ const currentDate = formatDate(new Date()); // current date in format '1st Jan 2
   return (  
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View>
-        <Text style={styles.caloriesMain}>Total Calories Burned</Text>
-        <Text style={styles.caloriesData}>{totalEnergy}</Text>
+        <Text style={styles.caloriesMain}>Active Calories Burned</Text>
+        <Text style={styles.caloriesData}>{caloriesBurned}</Text>
         <Text style={[styles.caloriesMain, { fontSize: 15 }]}>{currentDate}</Text>
       </View>
 
       //Bar Chart for Average Visualisation
       <View style={styles.barChart}>
         <Svg height={220} width="100%">
-          {totalEnergyData.map((item, index) => {
+          {activeData.datasets[0].data.map((item, index) => {
             const maxValue = Math.max(...totalEnergyData);
-            const barHeight = (item / maxValue) * 100; // Set the bar height to total energy
+            const barHeight = (item / maxValue) * 250; // Set the bar height to total energy
             return (
               <React.Fragment key={index}>
                 {/* Bar */}
@@ -109,10 +121,10 @@ const currentDate = formatDate(new Date()); // current date in format '1st Jan 2
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.chartTitle}>Active Energy</Text>
-        <Text style={[styles.caloriesData, { fontSize: 40, fontWeight: 500 }]}>{caloriesBurned}</Text>
+        <Text style={styles.chartTitle}>Total Energy Expenditure</Text>
+        <Text style={[styles.caloriesData, { fontSize: 40, fontWeight: 500 }]}>{totalEnergy}</Text>
         <LineChart
-          data={activeData}
+          data={newActiveData}
           width={Dimensions.get("window").width - 40}
           height={220}
           yAxisSuffix=""
