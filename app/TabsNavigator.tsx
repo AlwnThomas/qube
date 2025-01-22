@@ -13,7 +13,7 @@ export default function TabsNavigator() {
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
     }}>
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Overview" component={HomeScreen} />
       <Tab.Screen name="Summary" component={SummaryScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
