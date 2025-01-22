@@ -160,8 +160,8 @@ const currentDate = formatDate(new Date()); // current date in format '1st Jan 2
           withOuterLines={false}
           withShadow={false}
           chartConfig={{
-            backgroundGradientFrom: "",
-            backgroundGradientTo: "",
+            backgroundGradientFrom: "#fff",
+            backgroundGradientTo: "#fff",
             decimalPlaces: 0,
             color: (opacity = 1) => `rgba(0, 122, 255, ${opacity})`, // Line color
             labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Axis label color
