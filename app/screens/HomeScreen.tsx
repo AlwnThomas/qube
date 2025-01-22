@@ -15,6 +15,7 @@ export default function HomeScreen() {
   };
 
   const recoveryData = 69;
+  const stressPercentData = 20;
 
   // Live Date updates
   const formatDate = (date: Date) => {
@@ -43,6 +44,9 @@ export default function HomeScreen() {
   // Calculate the percentage of the goal achieved
   const recoveryPercentage = Math.min((recoveryData / 100) * 100, 100);
 
+  // Calculate the percentage of the goal achieved
+  const stressPercentage = Math.min((stressPercentData / 100) * 100, 100);
+
   // Movement Ring configuration
   const radius = 80; // Radius of the circle
   const strokeWidth = 15; // Stroke width for the ring
@@ -56,6 +60,13 @@ export default function HomeScreen() {
   const innerCircumference = 2 * Math.PI * innerRadius; // Circumference of the circle
   const innerOffset = innerCircumference - (recoveryPercentage / 100) * innerCircumference; // Offset for the stroke
   const innerSize = (innerRadius + innerStrokeWidth) * 2;
+
+  // Stress Ring configuration
+  const stressRadius = 40; // Radius of the circle
+  const stressStrokeWidth = 15; // Stroke width for the ring
+  const stressCircumference = 2 * Math.PI * stressRadius; // Circumference of the circle
+  const stressOffset = stressCircumference - (stressPercentage / 100) * stressCircumference; // Offset for the stroke
+  const stressSize = (stressRadius + stressStrokeWidth) * 2;
 
   //Stress Data const, replace with realtime
   const stressData = {
@@ -120,7 +131,7 @@ export default function HomeScreen() {
           cx={radius + strokeWidth}
           cy={radius + strokeWidth}
           r={radius}
-          stroke="#00ff4c"
+          stroke="rgb(70, 250, 150)"
           strokeWidth={strokeWidth}
           fill="none"
           strokeDasharray={circumference}
@@ -152,7 +163,7 @@ export default function HomeScreen() {
           cx={innerRadius + innerStrokeWidth}
           cy={innerRadius + innerStrokeWidth}
           r={innerRadius}
-          stroke="tomato"
+          stroke="rgb(255, 100, 70)"
           strokeWidth={innerStrokeWidth}
           fill="none"
           strokeDasharray={innerCircumference}
@@ -161,6 +172,39 @@ export default function HomeScreen() {
           transform={`rotate(-90 ${innerRadius + innerStrokeWidth} ${innerRadius + innerStrokeWidth})`} // Start the stroke from 90 degrees
         />
       </Svg>
+
+      //Ring Graph for Stress
+      {/* Circle Ring Graph */}
+      <Svg height={stressSize} width={stressSize}
+       style={{
+       position: 'absolute', // Overlay on the outer ring
+       }}>
+        
+        {/* Background Circle */}
+        <Circle
+          cx={stressRadius + stressStrokeWidth}
+          cy={stressRadius + stressStrokeWidth}
+          r={stressRadius}
+          stroke="#e6e6e6"
+          strokeWidth={stressStrokeWidth}
+          fill="none"
+        />
+    
+        {/* Progress Circle */}
+        <Circle
+          cx={stressRadius + stressStrokeWidth}
+          cy={stressRadius + stressStrokeWidth}
+          r={stressRadius}
+          stroke="rgb(70, 150, 255)"
+          strokeWidth={stressStrokeWidth}
+          fill="none"
+          strokeDasharray={stressCircumference}
+          strokeDashoffset={stressOffset}
+          strokeLinecap="butt" // Makes the stroke have a straight edge
+          transform={`rotate(-90 ${stressRadius + stressStrokeWidth} ${stressRadius + stressStrokeWidth})`} // Start the stroke from 90 degrees
+        />
+      </Svg>
+
     </View>
 
     <Text style={styles.cardTitle}>Today's Movement</Text>
@@ -182,14 +226,20 @@ export default function HomeScreen() {
     </View>
 
     <View style={styles.keyCard}>
+      <Text style={styles.keyCardTitle}>Sleep</Text>
+      <Text style={styles.keyCardValue}>98%</Text>
+    </View>
+
+    <View style={styles.keyCard}>
       <Text style={styles.keyCardTitle}>HRV</Text>
       <Text style={styles.keyCardValue}>105</Text>
     </View>
 
     <View style={styles.keyCard}>
-      <Text style={styles.keyCardTitle}>Sleep Perfomance</Text>
-      <Text style={styles.keyCardValue}>98%</Text>
+      <Text style={styles.keyCardTitle}>RHR</Text>
+      <Text style={styles.keyCardValue}>68</Text>
     </View>
+
     </View>
 
     <View style={styles.card}>
