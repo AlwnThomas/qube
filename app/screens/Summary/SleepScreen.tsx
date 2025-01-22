@@ -5,7 +5,7 @@ import { Picker } from '@react-native-picker/picker';
 export default function SleepScreen() {
 
     // Live Date updates
-    const formatDate = (date) => {
+    const formatDate = (date: Date) => {
       const day = date.getDate();
       const month = date.toLocaleString('default', { month: 'short' }); // e.g., 'Jan'
       const year = date.getFullYear();

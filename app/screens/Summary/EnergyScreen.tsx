@@ -42,7 +42,7 @@ const restingData = {
   labels: ["12am", "6am", "12pm", "6pm", "12am"],
   datasets: [
     {
-      data: [250, 250, 250, 250, 250].reduce((acc, curr) =>{ //Replace with realtime data
+      data: [250, 250, 250, 250, 250].reduce((acc: number[], curr: number) =>{ //Replace with realtime data
         const lastValue = acc[acc.length - 1] || 0;
         acc.push(curr + lastValue);
         return acc;
@@ -59,7 +59,7 @@ const totalEnergyData = activeData.datasets[0].data.map((activeValue, index) => 
 });
 
  // Live Date updates
-const formatDate = (date) => {
+const formatDate = (date: Date) => {
   const day = date.getDate();
   const month = date.toLocaleString('default', { month: 'short' }); // e.g., 'Jan'
   const year = date.getFullYear();
