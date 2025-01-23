@@ -48,21 +48,21 @@ export default function HomeScreen() {
   const stressPercentage = Math.min((stressPercentData / 100) * 100, 100);
 
   // Movement Ring configuration
-  const radius = 80; // Radius of the circle
+  const radius = 75; // Radius of the circle
   const strokeWidth = 15; // Stroke width for the ring
   const circumference = 2 * Math.PI * radius; // Circumference of the circle
   const offset = circumference - (stepPercentage / 100) * circumference; // Offset for the stroke
   const size = (radius + strokeWidth) * 2;
 
   // Sleep Ring configuration
-  const innerRadius = 60; // Radius of the circle
+  const innerRadius = radius - 20; // Radius of the circle
   const innerStrokeWidth = 15; // Stroke width for the ring
   const innerCircumference = 2 * Math.PI * innerRadius; // Circumference of the circle
   const innerOffset = innerCircumference - (recoveryPercentage / 100) * innerCircumference; // Offset for the stroke
   const innerSize = (innerRadius + innerStrokeWidth) * 2;
 
   // Stress Ring configuration
-  const stressRadius = 40; // Radius of the circle
+  const stressRadius = radius - 40; // Radius of the circle
   const stressStrokeWidth = 15; // Stroke width for the ring
   const stressCircumference = 2 * Math.PI * stressRadius; // Circumference of the circle
   const stressOffset = stressCircumference - (stressPercentage / 100) * stressCircumference; // Offset for the stroke
@@ -207,7 +207,7 @@ export default function HomeScreen() {
 
     </View>
 
-    <Text style={styles.cardTitle}>Today's Movement</Text>
+    <Text style={styles.cardTitle}>Today's Metrics</Text>
     <View style={styles.card}>
       <Text style={styles.keyCardTitle}>Walking</Text>
       <Text style={styles.keyCardValue}>12000</Text>
