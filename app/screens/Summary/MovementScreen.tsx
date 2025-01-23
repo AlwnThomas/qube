@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
   },
   StepData: {
     fontSize: 40,
-    color: 'tomato',
+    color: 'rgb(0, 128, 128)',
     fontWeight: 800,
   },
   averageSteps: {

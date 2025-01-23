@@ -63,6 +63,6 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'tomato',
+    color: 'rgb(0, 128, 128)',
   },
 });

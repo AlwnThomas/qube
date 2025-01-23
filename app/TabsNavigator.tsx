@@ -13,8 +13,8 @@ export default function TabsNavigator() {
     <View style={{flex:1, marginTop: 30}}>
     <Tab.Navigator 
       screenOptions={{
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: 'rgb(0, 128, 128)',
+        tabBarInactiveTintColor: 'rgb(110, 119, 131)',
       }}
     >
       <Tab.Screen

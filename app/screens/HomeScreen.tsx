@@ -131,7 +131,7 @@ export default function HomeScreen() {
           cx={radius + strokeWidth}
           cy={radius + strokeWidth}
           r={radius}
-          stroke="rgb(70, 250, 150)"
+          stroke="rgb(0, 235, 106)"
           strokeWidth={strokeWidth}
           fill="none"
           strokeDasharray={circumference}
@@ -163,7 +163,7 @@ export default function HomeScreen() {
           cx={innerRadius + innerStrokeWidth}
           cy={innerRadius + innerStrokeWidth}
           r={innerRadius}
-          stroke="rgb(255, 100, 70)"
+          stroke="rgb(0, 128, 128)"
           strokeWidth={innerStrokeWidth}
           fill="none"
           strokeDasharray={innerCircumference}
@@ -195,7 +195,7 @@ export default function HomeScreen() {
           cx={stressRadius + stressStrokeWidth}
           cy={stressRadius + stressStrokeWidth}
           r={stressRadius}
-          stroke="rgb(70, 150, 255)"
+          stroke="rgb(194, 51, 51)"
           strokeWidth={stressStrokeWidth}
           fill="none"
           strokeDasharray={stressCircumference}
@@ -258,8 +258,8 @@ export default function HomeScreen() {
           backgroundGradientFrom: "",
           backgroundGradientTo: "",
           decimalPlaces: 0,
-          color: (opacity = 1) => `rgba(0, 122, 255, ${opacity})`, // Line color
-          labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Axis label color
+          color: (opacity = 1) => `rgba(0, 128, 128, ${opacity})`, // Line color
+          labelColor: (opacity = 1) => `rgba(0, 128, 128, ${opacity})`, // Axis label color
         }}
 
         bezier
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 18,
     fontWeight: '500',
-    color: 'gray',
+    color: 'rgb(110, 119, 131)',
     marginTop: 20,
   },
   keyCardContainer: {
@@ -327,24 +327,24 @@ const styles = StyleSheet.create({
   keyCardTitle: {
     fontSize: 16,
     fontWeight: '500',
-    color: 'gray',
+    color: 'rgb(110, 119, 131)',
   },
   keyCardValue: {
     fontSize: 20,
     fontWeight: '600',
     marginTop: 4,
-    color: 'tomato',
+    color: 'rgb(0, 128, 128)',
   },
   day: {
     fontSize: 26,
-    color: 'tomato',
+    color: 'rgb(0, 128, 128)',
     fontWeight: '700',
   },
   date: {
     marginBottom: 20,
     paddingLeft: 4,
     fontSize: 16,
-    color: 'gray',
+    color: 'rgb(110, 119, 131)',
     fontWeight: '500',
   },
 });

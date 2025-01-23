@@ -103,10 +103,10 @@ export default function SleepScreen() {
 
   // Stages of sleep labeled
   const sleepStages = [
-    { label: 'Awake', duration: '0h 53m', color: 'rgb(232, 225, 225)' },
-    { label: 'Dream', duration: '0h 32m', color: 'rgb(254, 191, 32)' }, // Fixed extra parenthesis
-    { label: 'Light', duration: '3h 07m', color: 'tomato' },
-    { label: 'Deep', duration: '0h 35m', color: 'rgba(186, 8, 8, 0.8)' },
+    { label: 'Awake', duration: '0h 53m', color: 'rgba(110, 119, 131, 0.57)' },
+    { label: 'Dream', duration: '0h 32m', color: 'rgb(93, 255, 201)' }, // Fixed extra parenthesis
+    { label: 'Light', duration: '3h 07m', color: 'rgb(0, 128, 128)' },
+    { label: 'Deep', duration: '0h 35m', color: 'rgb(0, 71, 66)' },
   ];
 
   // Helper function to convert duration to minutes
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
   },
   sleepData: {
     fontSize: 26,
-    color: 'tomato',
+    color: 'rgb(0, 128, 128)',
     fontWeight: '800',
   },
   pickerContainer: {
@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
     height: 50, // Height of the box around the selected value
     backgroundColor: 'rgb(255, 255, 255)',
     borderRadius: 10,
-    borderColor: 'rgba(255, 99, 71, 0.66)',
+    borderColor: 'rgba(0, 128, 128, 0.53)',
     borderWidth: 1,
     position: 'absolute', // Position the box absolutely
     shadowColor: '#000', // Optional shadow for better visuals
@@ -354,13 +354,13 @@ const styles = StyleSheet.create({
     height: 150, // Increase height to ensure the picker is fully visible
   },
   pickerItem: {
-    color: 'tomato',
+    color: 'rgb(0, 128, 128)',
   },
   day: {
     marginTop: 80,
     marginBottom: 10,
     fontSize: 26,
-    color: 'tomato',
+    color: 'rgb(0, 128, 128)',
     fontWeight: '700',
   },
   timelineContainer: {
@@ -431,14 +431,14 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 20,
     fontWeight: '600',
-    color: 'tomato',
+    color: 'rgb(0, 128, 128)',
     marginTop: 5,
     textAlign: 'left',
   },
   statValueSmall: {
     fontSize: 14,
     fontWeight: '600',
-    color: 'tomato',
+    color: 'rgb(0, 128, 128)',
     textAlign: 'left',
   },
 });
