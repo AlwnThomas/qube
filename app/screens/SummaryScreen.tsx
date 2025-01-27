@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 
 export default function SummaryScreen({ navigation }) {
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       
       {/* Movement Card */}
       <TouchableOpacity 
@@ -37,7 +37,7 @@ export default function SummaryScreen({ navigation }) {
             <Text style={styles.cardTitle}>Workouts</Text>
         </TouchableOpacity>
 
-    </View>
+    </ScrollView>
   );
 }
 
@@ -45,12 +45,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
   card: {
     width: '100%',
-    height: '20%',
+    height: 120,
     backgroundColor: 'white',
     padding: 20,
     marginVertical: 15,
@@ -63,6 +65,6 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'rgb(0, 128, 128)',
+    color: 'rgb(0, 80, 80)',
   },
 });

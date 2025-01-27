@@ -100,7 +100,7 @@ const currentDate = formatDate(new Date()); // current date in format '1st Jan 2
                   y={200 - barHeight} // Start position for the bar
                   width={25} // Bar width
                   height={barHeight} // Bar height
-                  fill="tomato"
+                  fill="rgb(0, 128, 128)"
                 />
 
                 {/* Time Labels on Horizontal Axis */}
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   },
   caloriesMain: {
     fontSize: 18,
-    color: 'gray',
+    color: 'rgb(110, 119, 131)',
     fontWeight: 500,
   },
   caloriesData: {
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   },
   chartTitle: {
     fontSize: 12,
-    color: 'gray',
+    color: 'rgb(110, 119, 131)',
     fontWeight: 500,
   }
 });

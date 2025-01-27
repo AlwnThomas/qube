@@ -1,27 +1,51 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/AntDesign';
 import HomeScreen from './screens/HomeScreen';
+import RecoveryScreen from './screens/RecoveryScreen';
 import SummaryScreen from './screens/SummaryScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
+const HomeStack = createStackNavigator();
+
+function HomeStackNavigator() {
+  return (
+    <HomeStack.Navigator
+      screenOptions={{
+        headerShown: false,
+        ...TransitionPresets.SlideFromRightIOS,
+      }}
+    >
+      <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
+      <HomeStack.Screen
+        name="RecoveryScreen"
+        component={RecoveryScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Recovery',
+          headerTitleAlign: 'center',
+          headerStyle: { backgroundColor: 'white' },
+          headerTintColor: 'rgb(0, 120, 120)',
+        }}
+      />
+    </HomeStack.Navigator>
+  );
+}
 
 export default function TabsNavigator() {
   return (
-    <View style={{flex:1, marginTop: 30}}>
-    <Tab.Navigator 
+    <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: 'rgb(0, 128, 128)',
+        tabBarActiveTintColor: 'rgb(0, 120, 120)',
         tabBarInactiveTintColor: 'rgb(110, 119, 131)',
       }}
     >
       <Tab.Screen
-        name="Overview"
-        component={HomeScreen}
+        name="Home"
+        component={HomeStackNavigator} // Use HomeStackNavigator here
         options={{
-          headerShown: false, // Hides the header on the Home screen
           tabBarIcon: ({ color, size }) => (
             <Icon name="home" color={color} size={size} />
           ),
@@ -32,7 +56,7 @@ export default function TabsNavigator() {
         component={SummaryScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="notepad" color={color} size={size} />
+            <Icon name="barschart" color={color} size={size} />
           ),
         }}
       />
@@ -41,12 +65,10 @@ export default function TabsNavigator() {
         component={SettingsScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="settings" color={color} size={size} />
+            <Icon name="setting" color={color} size={size} />
           ),
         }}
       />
     </Tab.Navigator>
-    </View>
   );
 }
-

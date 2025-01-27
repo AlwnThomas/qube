@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   cardTitle: {
-    color: 'gray',
+    color: 'rgb(110, 119, 131)',
     fontSize: 16,
     fontWeight: '600',
     paddingBottom: 10,
@@ -306,12 +306,12 @@ const styles = StyleSheet.create({
   },
   sleepMain: {
     fontSize: 15,
-    color: 'gray',
+    color: 'rgb(110, 119, 131)',
     fontWeight: '500',
   },
   sleepData: {
     fontSize: 26,
-    color: 'rgb(0, 128, 128)',
+    color: 'rgb(0, 80, 80)',
     fontWeight: '800',
   },
   pickerContainer: {
@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
   },
   clockBoxTitle: {
     fontSize: 14,
-    color: 'gray',
+    color: 'rgb(110, 119, 131)',
     fontWeight: '500',
     marginBottom: 10,
     textAlign: 'center',
@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
     marginTop: 80,
     marginBottom: 10,
     fontSize: 26,
-    color: 'rgb(0, 128, 128)',
+    color: 'rgb(0, 80, 80)',
     fontWeight: '700',
   },
   timelineContainer: {
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
   },
   timelineLabelText: {
     fontSize: 12,
-    color: 'gray',
+    color: 'rgb(110, 119, 131)',
   },
   statsContainer: {
     flexDirection: 'row',
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
   },
   statTitle: {
     fontSize: 12,
-    color: 'gray',
+    color: 'rgb(110, 119, 131)',
     fontWeight: '500',
     textAlign: 'left',
   },

@@ -198,7 +198,7 @@ export default function MovementDetails() {
                   y={200 - barHeight} // Start position for the bar
                   width={20} // Bar width
                   height={barHeight} // Bar height
-                  fill="tomato"
+                  fill="rgb(0, 128, 128)"
                 />
               </React.Fragment>
             );
@@ -252,12 +252,12 @@ const styles = StyleSheet.create({
   },
   StepMain: {
     fontSize: 20,
-    color: 'gray',
+    color: 'rgb(110, 119, 131)',
     fontWeight: 500,
   },
   StepData: {
     fontSize: 40,
-    color: 'rgb(0, 128, 128)',
+    color: 'rgb(0, 80, 80)',
     fontWeight: 800,
   },
   averageSteps: {
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     left: 15,
     fontSize: 14,
     fontWeight: '600',
-    color: 'gray',
+    color: 'rgb(110, 119, 131)',
   },
   percentageText: {
     fontSize: 18,
