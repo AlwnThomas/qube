@@ -5,7 +5,6 @@ import MovementScreen from './screens/Summary/MovementScreen';
 import EnergyScreen from './screens/Summary/EnergyScreen';
 import SleepScreen from './screens/Summary/SleepScreen';
 import WorkoutsScreen from './screens/Summary/WorkoutsScreen';
-import RecoveryScreen from './screens/RecoveryScreen';
 
 const Stack = createStackNavigator();
 

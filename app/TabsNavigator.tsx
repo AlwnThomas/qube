@@ -6,6 +6,7 @@ import HomeScreen from './screens/HomeScreen';
 import RecoveryScreen from './screens/RecoveryScreen';
 import SummaryScreen from './screens/SummaryScreen';
 import SettingsScreen from './screens/SettingsScreen';
+import SummaryStack from './SummaryStack';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -23,7 +24,7 @@ function HomeStackNavigator() {
         name="RecoveryScreen"
         component={RecoveryScreen}
         options={{
-          headerShown: true,
+          headerShown: false,
           headerTitle: 'Recovery',
           headerTitleAlign: 'center',
           headerStyle: { backgroundColor: 'white' },
@@ -38,6 +39,7 @@ export default function TabsNavigator() {
   return (
     <Tab.Navigator
       screenOptions={{
+        headerShown: false,
         tabBarActiveTintColor: 'rgb(0, 120, 120)',
         tabBarInactiveTintColor: 'rgb(110, 119, 131)',
       }}
@@ -53,7 +55,7 @@ export default function TabsNavigator() {
       />
       <Tab.Screen
         name="Summary"
-        component={SummaryScreen}
+        component={SummaryStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="barschart" color={color} size={size} />
