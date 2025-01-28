@@ -1,19 +1,38 @@
 // RecoveryScreen.js
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import Svg, { Circle } from 'react-native-svg';
 import HomeScreen from './HomeScreen';
 
 export default function RecoveryScreen({ navigation }) {
   const [selectedTab, setSelectedTab] = useState('Sleep');
+
+  const sleepScore = 98;
+  const recoveryData = 69;
+  const recoveryPercentage = Math.min((recoveryData / 100) * 100, 100);
+
+  const radius = 95;
+  const strokeWidth = 15;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (sleepScore / 100) * circumference;
+  const size = (radius + strokeWidth) * 2;
+
+  const innerRadius = radius - 25;
+  const innerStrokeWidth = 15;
+  const innerCircumference = 2 * Math.PI * innerRadius;
+  const innerOffset = innerCircumference - (recoveryPercentage / 100) * innerCircumference;
+  const innerSize = (innerRadius + innerStrokeWidth) * 2;
+
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      {/* Tab Bar at the top */}
-      <View style={styles.tabContainer}>
+    <View style={styles.container}>
+
+     {/* Tab Bar at the top */}
+     <View style={styles.fixedButtonsContainer}>
         <TouchableOpacity
           style={[styles.tab, selectedTab === 'Stats' && styles.activeTab]}
           onPress={() => {
             setSelectedTab('Stats');
-            navigation.navigate('HomeScreen'); // Navigate to HomeScreen
+            navigation.navigate(HomeScreen); // Navigates to the Summary screen
           }}
         >
           <Text style={styles.tabText}>Stats</Text>
@@ -24,63 +43,96 @@ export default function RecoveryScreen({ navigation }) {
           style={[styles.tab, selectedTab === 'Sleep' && styles.activeTab]}
           onPress={() => {
             setSelectedTab('Sleep');
-            navigation.navigate('RecoveryScreen'); // Navigate to RecoveryScreen
+            navigation.navigate('RecoveryScreen'); // Navigates to the Recovery screen
           }}
         >
-          <Text style={styles.tabText}>Sleep</Text>
+          <Text style={styles.tabText}>Recover</Text>
           {selectedTab === 'Sleep' && <View style={styles.activeTabLine} />}
         </TouchableOpacity>
       </View>
 
-      {/* Content based on active tab */}
-      <View style={styles.screen}>
-        {selectedTab === 'Stats' && (
-          <Text style={styles.cardTitle}>Stats Content</Text>
-          // Add content related to Stats here
-        )}
+    {/* Start of scrollabale screen area */}
+    <ScrollView style={styles.scrollView}>
 
-        {selectedTab === 'Sleep' && (
-          <Text style={styles.cardTitle}>Sleep Content</Text>
-          // Add content related to Sleep here
-        )}
+      <View>
+        <Text style={styles.heading}>Sleep & Recovery</Text>
       </View>
+
+      <View style={styles.ringContainer}>
+        {/* Ring Graph for Sleep */}
+        <Svg height={size} width={size}>
+          <Circle cx={radius + strokeWidth} cy={radius + strokeWidth} r={radius} stroke="rgba(0, 185, 195, 0.15)" strokeWidth={strokeWidth} fill="none" />
+          <Circle cx={radius + strokeWidth} cy={radius + strokeWidth} r={radius} stroke="rgb(0, 185, 195)" strokeWidth={strokeWidth} fill="none" strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="butt" transform={`rotate(-90 ${radius + strokeWidth} ${radius + strokeWidth})`} />
+        </Svg>
+
+        {/* Ring Graph for Recovery */}
+        <Svg height={innerSize} width={innerSize} style={{ position: 'absolute', top: 25}}>
+          <Circle cx={innerRadius + innerStrokeWidth} cy={innerRadius + innerStrokeWidth} r={innerRadius} stroke="rgba(0, 120, 160, 0.15)" strokeWidth={innerStrokeWidth} fill="none" />
+          <Circle cx={innerRadius + innerStrokeWidth} cy={innerRadius + innerStrokeWidth} r={innerRadius} stroke="rgb(0, 120, 160)" strokeWidth={innerStrokeWidth} fill="none" strokeDasharray={innerCircumference} strokeDashoffset={innerOffset} strokeLinecap="butt" transform={`rotate(-90 ${innerRadius + innerStrokeWidth} ${innerRadius + innerStrokeWidth})`} />
+        </Svg>
+
+      </View>
+
     </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollContainer: {
+  container: {
     flexGrow: 1,
     backgroundColor: 'rgb(247, 249, 252)',
+  },
+  scrollView: {
+    marginTop: 100, // Pushes the scrollable content below the fixed buttons
   },
   screen: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  tabContainer: {
+  fixedButtonsContainer: {
+    position: 'absolute',
+    top: 40,
+    left: 0,
+    right: 0,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 60,
-    marginBottom: 0,
+    justifyContent: 'space-around',
+    backgroundColor: 'rgb(247, 249, 252)', // Add a background color to avoid overlap issues
+    zIndex: 10, // Ensures it stays above the scrollable content
+    paddingVertical: 10,
+    shadowColor: 'rgb(247, 249, 252)',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 5, // For Android
+  },
+  tabButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    backgroundColor: '#f0f0f0',
   },
   tab: {
+    top: 10,
     alignItems: 'center',
     paddingVertical: 0,
     flex: 1,
+    borderBottomWidth: 6,
+    borderBottomColor: 'rgba(110, 119, 131, 0.1)',
   },
   activeTab: {
     borderBottomWidth: 3,
     borderBottomColor: 'rgb(0, 128, 128)',
   },
   tabText: {
-    fontSize: 18,
-    fontFamily: 'Helvetica',
+    fontSize: 20,
+    fontFamily: 'Futura',
     fontWeight: '600',
     color: 'rgb(0, 128, 128)',
   },
   activeTabLine: {
-    height: 5,
+    height: 3,
     width: '100%',
     backgroundColor: 'rgb(0, 128, 128)',
     marginTop: 10,
@@ -97,14 +149,23 @@ const styles = StyleSheet.create({
   tabLabel: {
     fontSize: 20,
     fontWeight: '600',
-    fontFamily: 'Helvetica',
+    fontFamily: 'Futura',
     color: 'rgb(0, 128, 128)',
+  },
+  heading: {
+    fontSize: 28,
+    color: 'rgb(0, 80, 80)',
+    fontWeight: '800',
+    fontFamily: 'Avenir',
+    textAlign: 'center',
+    marginTop: 20,
   },
   ringContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
     marginVertical: 20,
+    marginTop: 30,
   },
   ring: {
     alignItems: 'center',

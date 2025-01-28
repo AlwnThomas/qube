@@ -1,17 +1,71 @@
 import React, { useState, useEffect} from 'react';
-import { View, Text, Image, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, Modal, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import Svg, { Circle } from 'react-native-svg';
+import Icon from 'react-native-vector-icons/AntDesign'
+import * as Location from 'expo-location';
+import { Pedometer, Accelerometer } from 'expo-sensors';
 
 export default function HomeScreen({navigation}) {
+
+  {/* Permissions for stepCounting using pedometer and accelometer */}
+  const [stepCount, setStepCount] = useState(0);
+  const [acceleration, setAcceleration] = useState({ x: 0, y: 0, z: 0 });
+  const [permissionGranted, setPermissionGranted] = useState(false);
+
+  useEffect(() => {
+    const requestPermission = async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status === 'granted') {
+        setPermissionGranted(true);
+      } else {
+        setPermissionGranted(false);
+        alert("Permission for step tracking is required.");
+      }
+    };
+
+    // Request permission
+    requestPermission();
+
+    if (permissionGranted) {
+      // Start pedometer and accelerometer updates
+      const pedometerSubscription = Pedometer.watchStepCount((result) => {
+        setStepCount(result.steps);
+      });
+
+      const accelerometerSubscription = Accelerometer.addListener(accelerometerData => {
+        setAcceleration(accelerometerData); // Update accelerometer data
+      });
+
+      // Cleanup on unmount
+      return () => {
+        pedometerSubscription.remove();
+        accelerometerSubscription.remove();
+      };
+    }
+  }, [permissionGranted]);
+
+  // Function to filter steps using accelerometer data
+  const filterPhoneMovement = () => {
+    const threshold = 10; // Example threshold value for detecting significant movement
+
+    // Calculate the magnitude of the accelerometer data
+    const magnitude = Math.sqrt(acceleration.x ** 2 + acceleration.y ** 2 + acceleration.z ** 2);
+
+    // If the magnitude of movement is above the threshold, it's considered a proper step
+    if (magnitude > threshold) {
+      return true; // Consider it a valid step
+    }
+
+    return false; // Ignore this movement
+  };
 
   const [selectedTab, setSelectedTab] = useState('Stats'); 
 
   const movementData = {
     stepGoal: 10000,
-    steps: 14000,
+    steps: stepCount,
     stepLength: 0.762, // in meters
-    time: 45, // in minutes
   };
 
   const recoveryData = 69;
@@ -40,7 +94,7 @@ export default function HomeScreen({navigation}) {
   const recoveryPercentage = Math.min((recoveryData / 100) * 100, 100);
   const stressPercentage = Math.min((stressPercentData / 100) * 100, 100);
 
-  const radius = 75;
+  const radius = 65;
   const strokeWidth = 15;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (stepPercentage / 100) * circumference;
@@ -88,6 +142,17 @@ export default function HomeScreen({navigation}) {
     return () => clearTimeout(timer);
   }, []);
 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // Toggle the modal visibility
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   return (
     <View style={styles.container}>
 
@@ -111,7 +176,7 @@ export default function HomeScreen({navigation}) {
             navigation.navigate('RecoveryScreen'); // Navigates to the Recovery screen
           }}
         >
-          <Text style={styles.tabText}>Sleep</Text>
+          <Text style={styles.tabText}>Recover</Text>
           {selectedTab === 'Sleep' && <View style={styles.activeTabLine} />}
         </TouchableOpacity>
       </View>
@@ -124,41 +189,88 @@ export default function HomeScreen({navigation}) {
           <Text style={styles.date}>{currentDate}</Text>
         </View>
 
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={styles.coreInfo}>
+          <Text style={[styles.coreTitle, {paddingTop: 0}]}>STEPS</Text>
+          <Text style={[styles.coreStat, {color: 'rgb(0, 200, 100)',}]}>{movementData.steps}</Text>
+
+          <Text style={styles.coreTitle}>RECOVERY</Text>
+          <Text style={[styles.coreStat, {color: 'rgb(0, 120, 160)',}]}>{recoveryPercentage}%</Text>
+
+          <Text style={styles.coreTitle}>STRESS</Text>
+          <Text style={[styles.coreStat, {color: 'rgb(200, 70, 50)',}]}>{stressPercentData}%</Text>
+        </View>
+
         {/* Ring Graph for Movement */}
         <View style={styles.ringContainer}>
           <Svg height={size} width={size}>
-            <Circle cx={radius + strokeWidth} cy={radius + strokeWidth} r={radius} stroke="#e6e6e6" strokeWidth={strokeWidth} fill="none" />
-            <Circle cx={radius + strokeWidth} cy={radius + strokeWidth} r={radius} stroke="rgb(0, 235, 106)" strokeWidth={strokeWidth} fill="none" strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="butt" transform={`rotate(-90 ${radius + strokeWidth} ${radius + strokeWidth})`} />
+            <Circle cx={radius + strokeWidth} cy={radius + strokeWidth} r={radius} stroke="rgba(0, 200, 100, 0.15)" strokeWidth={strokeWidth} fill="none" />
+            <Circle cx={radius + strokeWidth} cy={radius + strokeWidth} r={radius} stroke="rgb(0, 200, 100)" strokeWidth={strokeWidth} fill="none" strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="butt" transform={`rotate(-90 ${radius + strokeWidth} ${radius + strokeWidth})`} />
           </Svg>
 
           {/* Ring Graph for Recovery */}
-          <Svg height={innerSize} width={innerSize} style={{ position: 'absolute' }}>
-            <Circle cx={innerRadius + innerStrokeWidth} cy={innerRadius + innerStrokeWidth} r={innerRadius} stroke="#e6e6e6" strokeWidth={innerStrokeWidth} fill="none" />
-            <Circle cx={innerRadius + innerStrokeWidth} cy={innerRadius + innerStrokeWidth} r={innerRadius} stroke="rgb(0, 128, 128)" strokeWidth={innerStrokeWidth} fill="none" strokeDasharray={innerCircumference} strokeDashoffset={innerOffset} strokeLinecap="butt" transform={`rotate(-90 ${innerRadius + innerStrokeWidth} ${innerRadius + innerStrokeWidth})`} />
+          <Svg height={innerSize} width={innerSize} style={{ position: 'absolute', right: 20}}>
+            <Circle cx={innerRadius + innerStrokeWidth} cy={innerRadius + innerStrokeWidth} r={innerRadius} stroke="rgba(0, 120, 160, 0.15)" strokeWidth={innerStrokeWidth} fill="none" />
+            <Circle cx={innerRadius + innerStrokeWidth} cy={innerRadius + innerStrokeWidth} r={innerRadius} stroke="rgb(0, 120, 160)" strokeWidth={innerStrokeWidth} fill="none" strokeDasharray={innerCircumference} strokeDashoffset={innerOffset} strokeLinecap="butt" transform={`rotate(-90 ${innerRadius + innerStrokeWidth} ${innerRadius + innerStrokeWidth})`} />
           </Svg>
 
           {/* Ring Graph for Stress */}
-          <Svg height={stressSize} width={stressSize} style={{ position: 'absolute' }}>
-            <Circle cx={stressRadius + stressStrokeWidth} cy={stressRadius + stressStrokeWidth} r={stressRadius} stroke="#e6e6e6" strokeWidth={stressStrokeWidth} fill="none" />
-            <Circle cx={stressRadius + stressStrokeWidth} cy={stressRadius + stressStrokeWidth} r={stressRadius} stroke="rgb(194, 51, 51)" strokeWidth={stressStrokeWidth} fill="none" strokeDasharray={stressCircumference} strokeDashoffset={stressOffset} strokeLinecap="butt" transform={`rotate(-90 ${stressRadius + stressStrokeWidth} ${stressRadius + stressStrokeWidth})`} />
+          <Svg height={stressSize} width={stressSize} style={{ position: 'absolute', right: 40 }}>
+            <Circle cx={stressRadius + stressStrokeWidth} cy={stressRadius + stressStrokeWidth} r={stressRadius} stroke="rgba(200, 70, 50, 0.15)" strokeWidth={stressStrokeWidth} fill="none" />
+            <Circle cx={stressRadius + stressStrokeWidth} cy={stressRadius + stressStrokeWidth} r={stressRadius} stroke="rgb(200, 70, 50)" strokeWidth={stressStrokeWidth} fill="none" strokeDasharray={stressCircumference} strokeDashoffset={stressOffset} strokeLinecap="butt" transform={`rotate(-90 ${stressRadius + stressStrokeWidth} ${stressRadius + stressStrokeWidth})`} />
           </Svg>
+        </View>
         </View>
 
         <Text style={styles.cardTitle}>Daily Overview</Text>
-        <View style={styles.card}>
+
+        <View style={styles.miniCard}>
           <Text style={styles.keyCardTitle}>Walking</Text>
-          <Text style={styles.keyCardValue}>12000</Text>
+          <Text style={styles.keyCardValue}>{movementData.steps} steps</Text>
         </View>
 
-        <View style={styles.card}>
+        <View style={styles.miniCard}>
           <Text style={styles.keyCardTitle}>Sleep</Text>
-          <Text style={styles.keyCardValue}>7Hr 24min</Text>
+          <Text style={styles.keyCardValue}>7hr 24min</Text>
         </View>
 
-        <Text style={styles.cardTitle}>Body Balance</Text>
+
+        <View style={styles.modalHeader}>
+          <Text style={[styles.cardTitle, {marginTop:40}]}>Body Balance</Text>
+          {/* Touchable Button with Icon */}
+          <TouchableOpacity onPress={openModal} style={{position: 'absolute', left: 120, top: 45}}>
+            <Icon name="questioncircleo" size={14} color="#008080" />
+          </TouchableOpacity>
+        </View>
+      
+       {/* Modal for the pop-up */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={closeModal}
+        >
+          <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            {/* Close button */}
+            <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+              <Icon name="closecircleo" size={20} color="rgb(0, 80, 80)" />
+            </TouchableOpacity>
+
+            {/* Modal Content */}
+            <Text style={styles.modalTitle}>Body Balance</Text>
+            <Text style={styles.modalParagraph}>
+            "Body Balance" conveys the idea of maintaining equilibrium within your body’s physical systems and functions.
+            It suggests that all the key elements of health such as calorie intake, recovery, stress levels, and overall well-being 
+            are in harmony and working optimally.
+            </Text>
+          </View>
+          </View>
+        </Modal>
+
         <View style={styles.keyCardContainer}>
           <View style={styles.keyCard}>
-            <Text style={styles.keyCardTitle}>Calories</Text>
+            <Text style={styles.keyCardTitle}>Kcals</Text>
             <Text style={styles.keyCardValue}>1950</Text>
           </View>
 
@@ -248,6 +360,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 0,
     flex: 1,
+    borderBottomWidth: 6,
+    borderBottomColor: 'rgba(110, 119, 131, 0.1)',
   },
   activeTab: {
     borderBottomWidth: 3,
@@ -280,11 +394,42 @@ const styles = StyleSheet.create({
     fontFamily: 'Futura',
     color: 'rgb(0, 128, 128)',
   },
+  day: {
+    fontSize: 26,
+    color: 'rgb(0, 80, 80)',
+    fontWeight: '800',
+    fontFamily: 'Avenir',
+    marginTop: 10,
+  },
+  date: {
+    marginBottom: 20,
+    paddingLeft: 4,
+    fontSize: 14,
+    color: 'rgb(110, 119, 131)',
+    fontWeight: '500',
+    fontFamily: 'Futura',
+  },
+  coreInfo:{
+    justifyContent: 'flex-start',
+  },
+  coreTitle:{
+    fontFamily: 'Avenir',
+    fontSize: 12,
+    fontWeight: '900',
+    color: 'rgb(0, 80, 80)',
+    paddingTop: 8,
+  },
+  coreStat:{
+    fontSize: 20,
+    fontWeight: '600',
+    fontFamily: 'Futura',
+  },
   ringContainer: {
-    alignItems: 'center',
+    alignItems: 'flex-end',
     justifyContent: 'center',
     position: 'relative',
-    marginVertical: 20,
+    marginBottom: 20,
+    transform: [{translateY: -10}],
   },
   ring: {
     alignItems: 'center',
@@ -294,7 +439,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Futura',
     width: '100%',
     backgroundColor: 'white',
-    padding: 20,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     marginVertical: 10,
     borderRadius: 15,
     shadowColor: '#000',
@@ -303,26 +449,38 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 2, // For Android
   },
+  miniCard: {
+    fontFamily: 'Futura',
+    backgroundColor: 'white',
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2, // For Android
+  },
   cardTitle: {
     fontFamily: 'Avenir',
     fontSize: 18,
     fontWeight: '900',
     color: 'rgb(0, 80, 80)',
-    marginTop: 20,
+    marginVertical: 15,
   },
   keyCardContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginTop: 20,
   },
   keyCard: {
     fontFamily: 'Futura',
-    width: '48%',
+    width: '22.5%',
     height: 80,
     backgroundColor: 'white',
-    borderRadius: 15,
-    padding: 20,
+    alignItems: 'center',
+    borderRadius: 10,
+    padding: 5,
     justifyContent: 'center',
     marginBottom: 10,
     shadowColor: '#000',
@@ -331,30 +489,55 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   keyCardTitle: {
-    fontFamily: 'Futura',
-    fontSize: 16,
-    fontWeight: '500',
+    fontFamily: 'Avenir',
+    fontSize: 14,
+    fontWeight: '700',
     color: 'rgb(110, 119, 131)',
   },
   keyCardValue: {
-    fontFamily: 'Futura',
+    fontFamily: 'Avenir',
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: '700',
     marginTop: 4,
     color: 'rgb(0, 128, 128)',
   },
-  day: {
-    fontSize: 26,
-    color: 'rgb(0, 80, 80)',
-    fontWeight: '700',
-    fontFamily: 'Futura',
-  },
-  date: {
-    marginBottom: 20,
-    paddingLeft: 4,
-    fontSize: 16,
-    color: 'rgb(110, 119, 131)',
-    fontWeight: '500',
-    fontFamily: 'Futura',
-  },
+    // Modal styling
+    modalHeader: { 
+      flexDirection: 'row', 
+      alignItems: 'center' 
+    },
+    modalOverlay: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.4)', // Semi-transparent background
+    },
+    modalContent: {
+      width: 300,
+      padding: 20,
+      backgroundColor: '#fff',
+      borderRadius: 15,
+      position: 'relative',
+    },
+    closeButton: {
+      position: 'absolute',
+      top: 10,
+      right: 10,
+    },
+    modalTitle: {
+      fontFamily: 'Avenir',
+      fontSize: 18,
+      fontWeight: '800',
+      textAlign: 'center',
+      color: '#008080',
+      marginBottom: 10,
+    },
+    modalParagraph: {
+      fontSize: 14,
+      fontFamily: 'Avenir',
+      fontWeight: 500,
+      color: '#444',
+      justifyContent: 'center',
+      textAlign: 'center',
+    },
 });
