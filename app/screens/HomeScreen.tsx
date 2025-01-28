@@ -89,10 +89,10 @@ export default function HomeScreen({navigation}) {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
+    <View style={styles.container}>
 
      {/* Tab Bar at the top */}
-     <View style={styles.tabContainer}>
+     <View style={styles.fixedButtonsContainer}>
         <TouchableOpacity
           style={[styles.tab, selectedTab === 'Stats' && styles.activeTab]}
           onPress={() => {
@@ -115,6 +115,8 @@ export default function HomeScreen({navigation}) {
           {selectedTab === 'Sleep' && <View style={styles.activeTabLine} />}
         </TouchableOpacity>
       </View>
+
+      <ScrollView style={styles.scrollView}>
 
       <View style={{ paddingHorizontal: 20, marginVertical: 10 }}>
         <View>
@@ -142,7 +144,7 @@ export default function HomeScreen({navigation}) {
           </Svg>
         </View>
 
-        <Text style={styles.cardTitle}>Today's Metrics</Text>
+        <Text style={styles.cardTitle}>Daily Overview</Text>
         <View style={styles.card}>
           <Text style={styles.keyCardTitle}>Walking</Text>
           <Text style={styles.keyCardValue}>12000</Text>
@@ -153,7 +155,7 @@ export default function HomeScreen({navigation}) {
           <Text style={styles.keyCardValue}>7Hr 24min</Text>
         </View>
 
-        <Text style={styles.cardTitle}>Core Metrics</Text>
+        <Text style={styles.cardTitle}>Body Balance</Text>
         <View style={styles.keyCardContainer}>
           <View style={styles.keyCard}>
             <Text style={styles.keyCardTitle}>Calories</Text>
@@ -202,26 +204,47 @@ export default function HomeScreen({navigation}) {
 
       </View>
     </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollContainer: {
+  container: {
     flexGrow: 1,
     backgroundColor: 'rgb(247, 249, 252)',
+  },
+  scrollView: {
+    marginTop: 100, // Pushes the scrollable content below the fixed buttons
   },
   screen: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  tabContainer: {
+  fixedButtonsContainer: {
+    position: 'absolute',
+    top: 40,
+    left: 0,
+    right: 0,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 60,
-    marginBottom: 0,
+    justifyContent: 'space-around',
+    backgroundColor: 'rgb(247, 249, 252)', // Add a background color to avoid overlap issues
+    zIndex: 10, // Ensures it stays above the scrollable content
+    paddingVertical: 10,
+    shadowColor: 'rgb(247, 249, 252)',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 5, // For Android
+  },
+  tabButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    backgroundColor: '#f0f0f0',
   },
   tab: {
+    top: 10,
     alignItems: 'center',
     paddingVertical: 0,
     flex: 1,
@@ -231,13 +254,13 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgb(0, 128, 128)',
   },
   tabText: {
-    fontSize: 18,
-    fontFamily: 'Helvetica',
+    fontSize: 20,
+    fontFamily: 'Futura',
     fontWeight: '600',
     color: 'rgb(0, 128, 128)',
   },
   activeTabLine: {
-    height: 5,
+    height: 3,
     width: '100%',
     backgroundColor: 'rgb(0, 128, 128)',
     marginTop: 10,
@@ -254,7 +277,7 @@ const styles = StyleSheet.create({
   tabLabel: {
     fontSize: 20,
     fontWeight: '600',
-    fontFamily: 'Helvetica',
+    fontFamily: 'Futura',
     color: 'rgb(0, 128, 128)',
   },
   ringContainer: {
@@ -268,6 +291,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   card: {
+    fontFamily: 'Futura',
     width: '100%',
     backgroundColor: 'white',
     padding: 20,
@@ -277,11 +301,13 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -2, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
+    elevation: 2, // For Android
   },
   cardTitle: {
+    fontFamily: 'Avenir',
     fontSize: 18,
-    fontWeight: '500',
-    color: 'rgb(110, 119, 131)',
+    fontWeight: '900',
+    color: 'rgb(0, 80, 80)',
     marginTop: 20,
   },
   keyCardContainer: {
@@ -291,6 +317,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   keyCard: {
+    fontFamily: 'Futura',
     width: '48%',
     height: 80,
     backgroundColor: 'white',
@@ -304,11 +331,13 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   keyCardTitle: {
+    fontFamily: 'Futura',
     fontSize: 16,
     fontWeight: '500',
     color: 'rgb(110, 119, 131)',
   },
   keyCardValue: {
+    fontFamily: 'Futura',
     fontSize: 20,
     fontWeight: '600',
     marginTop: 4,
@@ -318,7 +347,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     color: 'rgb(0, 80, 80)',
     fontWeight: '700',
-    fontFamily: 'Helvetica',
+    fontFamily: 'Futura',
   },
   date: {
     marginBottom: 20,
@@ -326,6 +355,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'rgb(110, 119, 131)',
     fontWeight: '500',
-    fontFamily: 'Helvetica',
+    fontFamily: 'Futura',
   },
 });
