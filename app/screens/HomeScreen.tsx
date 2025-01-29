@@ -294,17 +294,17 @@ export default function HomeScreen({navigation}) {
           <Text style={styles.keyCardTitle}>Stress Levels</Text>
           <LineChart
             data={stressData}
-            width={Dimensions.get("window").width - 40}
+            width={Dimensions.get("window").width - 30}
             height={220}
-            yAxisSuffix=""
+            yAxisSuffix=" "
             yAxisInterval={1}
             withHorizontalLabels={false}
             withInnerLines={false}
             withOuterLines={false}
             withShadow={false}
             chartConfig={{
-              backgroundGradientFrom: "",
-              backgroundGradientTo: "",
+              backgroundGradientFrom: "#fff",
+              backgroundGradientTo: "#fff",
               decimalPlaces: 0,
               color: (opacity = 1) => `rgba(0, 128, 128, ${opacity})`,
               labelColor: (opacity = 1) => `rgba(0, 128, 128, ${opacity})`,
@@ -443,6 +443,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginVertical: 10,
     borderRadius: 15,
+    overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: -2, height: 2 },
     shadowOpacity: 0.1,
@@ -466,7 +467,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '900',
     color: 'rgb(0, 80, 80)',
-    marginVertical: 15,
+    marginVertical: 10,
   },
   keyCardContainer: {
     flexDirection: 'row',

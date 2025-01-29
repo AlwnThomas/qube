@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from './HomeScreen';
+import ActivityLoad from "../ActivityLoad";
 
 export default function RecoveryScreen({ navigation }) {
   const [selectedTab, setSelectedTab] = useState('Sleep');
@@ -22,6 +24,26 @@ export default function RecoveryScreen({ navigation }) {
   const innerCircumference = 2 * Math.PI * innerRadius;
   const innerOffset = innerCircumference - (recoveryPercentage / 100) * innerCircumference;
   const innerSize = (innerRadius + innerStrokeWidth) * 2;
+
+  // Stages of sleep labeled
+  const sleepStages = [
+    { label: 'Awake', duration: '1h 53m', color: 'rgba(176, 187, 188, 0.46)' },
+    { label: 'Dream', duration: '2h 32m', color: 'rgb(0, 255, 187)' }, // Fixed extra parenthesis
+    { label: 'Light', duration: '1h 07m', color: 'rgb(0, 185, 195)' },
+    { label: 'Deep', duration: '3h 35m', color: 'rgb(0, 103, 117)' },
+  ];
+
+  // Helper function to convert duration to minutes
+  const convertDurationToMinutes = (duration: string) => {
+    const [hours, minutes] = duration.split(' ').map((part) => parseFloat(part));
+    return hours * 60 + minutes;
+  };
+
+  // Calculate total duration of all sleep stages
+  const totalDuration = sleepStages.reduce(
+    (total, stage) => total + convertDurationToMinutes(stage.duration),
+    0
+  );
 
   return (
     <View style={styles.container}>
@@ -53,6 +75,7 @@ export default function RecoveryScreen({ navigation }) {
 
     {/* Start of scrollabale screen area */}
     <ScrollView style={styles.scrollView}>
+    <View style={{ paddingHorizontal: 20, marginVertical: 10 }}>
 
       <View>
         <Text style={styles.heading}>Sleep & Recovery</Text>
@@ -73,6 +96,102 @@ export default function RecoveryScreen({ navigation }) {
 
       </View>
 
+      {/* Ring Graph metrics Sleep Quality & Recovery % */}
+      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 20}}>
+      <View style={styles.keyCard}>
+        <Text style={styles.keyCardTitle}>Sleep Quality</Text>
+
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+         <Icon name="circle" size={14} color="rgb(0, 185, 195)" style={{marginRight: 5, marginTop: 5}}/>
+         <Text style={styles.keyCardValue}>{sleepScore} %</Text>
+        </View>
+
+      </View>
+
+      <View style={styles.keyCard}>
+        <Text style={styles.keyCardTitle}>Recovery Stat</Text>
+
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+         <Icon name="circle" size={14} color="rgb(0, 120, 160)" style={{marginRight: 5, marginTop: 5}}/>
+         <Text style={styles.keyCardValue}>{recoveryPercentage} %</Text>
+        </View>
+
+      </View>
+      </View>
+
+      {/* Sleep Activity, Sleep Timeline Tabs */}
+      <View style={styles.card}>
+      <Text style={[styles.cardTitle, {marginTop: 0}]}>Sleep Activities</Text>
+    
+      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+      <View>
+        <Text style={styles.keyCardTitle}>Time Slept</Text>
+        <Text style={styles.keyCardValue}>7hr 24min </Text>
+      </View>
+
+      <View>
+        <Text style={styles.keyCardTitle}>Time in bed</Text>
+        <Text style={styles.keyCardValue}>8hr 48min</Text>
+      </View>
+      </View>
+
+      {/* The Timeline Sleep Phases component */}
+      <Text style={styles.cardTitle}>Sleep Phases</Text>
+      <View style={styles.timelineContainer}>
+        <View style={styles.timelineBar}>
+          {sleepStages.map((stage, index) => (
+            <View
+              key={index}
+              style={[
+                styles.timelineSegment,
+                {
+                  flex: convertDurationToMinutes(stage.duration) / totalDuration,
+                  backgroundColor: stage.color,
+                },
+              ]}
+            />
+          ))}
+        </View>
+        <View style={styles.timelineLabels}>
+          {sleepStages.map((stage, index) => (
+            <View key={index} style={styles.timelineLabelItem}>
+              <View
+                style={[styles.timelineLabelColor, { backgroundColor: stage.color }]}
+              />
+              <Text style={styles.timelineLabelText}>
+                {stage.label} ({stage.duration})
+              </Text>
+            </View>
+          ))}
+        </View>
+      </View>
+      </View>
+
+      {/* Recovery and Recovery Timeline */}
+      <View style={styles.card}>
+        <Text style={[styles.cardTitle, {marginTop: 0}]}>Recovery</Text>
+    
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <View>
+           <Text style={[styles.keyCardTitle, {fontSize: 12}]}>Heart Rate Variability</Text>
+           <Text style={styles.keyCardValue}>105</Text>
+          </View>
+
+          <View>
+            <Text style={[styles.keyCardTitle, {fontSize: 12}]}>Resting Heart Rate</Text>
+            <Text style={styles.keyCardValue}>80</Text>
+          </View>
+        </View>
+
+        <Text style={styles.cardTitle}>Activity Load</Text>
+        <View style={styles.timelineContainer}>
+          <ActivityLoad />
+        </View>
+
+
+      </View>
+
+    </View>
     </ScrollView>
     </View>
   );
@@ -164,7 +283,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    marginVertical: 20,
     marginTop: 30,
   },
   ring: {
@@ -182,11 +300,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
   },
+  miniCard: {
+    fontFamily: 'Futura',
+    backgroundColor: 'white',
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2, // For Android
+  },
   cardTitle: {
+    fontFamily: 'Avenir',
     fontSize: 18,
-    fontWeight: '500',
-    color: 'rgb(110, 119, 131)',
-    marginTop: 20,
+    fontWeight: '900',
+    color: 'rgb(0, 80, 80)',
+    marginVertical: 10,
   },
   keyCardContainer: {
     flexDirection: 'row',
@@ -195,27 +326,68 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   keyCard: {
-    width: '48%',
+    width: '45%',
     height: 80,
-    backgroundColor: 'white',
+    backgroundColor: 'rgb(247, 249, 252)',
     borderRadius: 15,
-    padding: 20,
+    alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
   },
   keyCardTitle: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontFamily: 'Avenir',
+    fontSize: 14,
+    fontWeight: '700',
     color: 'rgb(110, 119, 131)',
   },
   keyCardValue: {
+    fontFamily: 'Avenir',
     fontSize: 20,
-    fontWeight: '600',
-    marginTop: 4,
+    fontWeight: '700',
+    marginTop:0,
     color: 'rgb(0, 128, 128)',
+  },
+  timelineContainer: {
+    width: '100%',
+    backgroundColor: 'rgb(247, 249, 252)',
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    borderRadius: 15,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: -2, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 2,
+  },
+  timelineBar: {
+    flexDirection: 'row',
+    height: 10,
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  timelineSegment: {
+    height: '100%',
+  },
+  timelineLabels: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+    marginTop: 15,
+  },
+  timelineLabelItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 15,
+    marginBottom: 5,
+  },
+  timelineLabelColor: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginRight: 5,
+  },
+  timelineLabelText: {
+    fontSize: 12,
+    color: 'rgb(110, 119, 131)',
   },
 });

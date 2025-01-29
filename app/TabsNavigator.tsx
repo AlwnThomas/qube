@@ -4,7 +4,6 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import Icon from 'react-native-vector-icons/AntDesign';
 import HomeScreen from './screens/HomeScreen';
 import RecoveryScreen from './screens/RecoveryScreen';
-import SummaryScreen from './screens/SummaryScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import SummaryStack from './SummaryStack';
 
