@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import { View, Text, Modal, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, Modal, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Image } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import Svg, { Circle } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/AntDesign'
@@ -270,23 +270,39 @@ export default function HomeScreen({navigation}) {
 
         <View style={styles.keyCardContainer}>
           <View style={styles.keyCard}>
-            <Text style={styles.keyCardTitle}>Kcals</Text>
+            <Image
+            source={require("../../assets/images/kcalsLogo.png")}
+            style={{ width: 40, height: 40, resizeMode: "contain" }}
+            />
             <Text style={styles.keyCardValue}>1950</Text>
+            <Text style={[styles.keyCardTitle, {fontSize: 12}]}>Kcals</Text>
           </View>
 
           <View style={styles.keyCard}>
-            <Text style={styles.keyCardTitle}>Sleep</Text>
+            <Image
+            source={require("../../assets/images/moonLogo.png")}
+            style={{ width: 36, height: 36, resizeMode: "contain" }}
+            />
             <Text style={styles.keyCardValue}>98%</Text>
+            <Text style={[styles.keyCardTitle, {fontSize: 12}]}>Sleep</Text>
           </View>
 
           <View style={styles.keyCard}>
-            <Text style={styles.keyCardTitle}>HRV</Text>
+            <Image
+            source={require("../../assets/images/hrvLogo.png")}
+            style={{ width: 40, height: 40, resizeMode: "contain" }}
+            />
             <Text style={styles.keyCardValue}>105</Text>
+            <Text style={[styles.keyCardTitle, {fontSize: 12}]}>HRV</Text>            
           </View>
 
           <View style={styles.keyCard}>
-            <Text style={styles.keyCardTitle}>RHR</Text>
+            <Image
+            source={require("../../assets/images/rhrLogo.png")}
+            style={{ width: 38, height: 38, resizeMode: "contain" }}
+            />
             <Text style={styles.keyCardValue}>68</Text>
+            <Text style={[styles.keyCardTitle, {fontSize: 12}]}>RHR</Text>
           </View>
         </View>
 
@@ -477,7 +493,7 @@ const styles = StyleSheet.create({
   keyCard: {
     fontFamily: 'Futura',
     width: '22.5%',
-    height: 80,
+    height: 100,
     backgroundColor: 'white',
     alignItems: 'center',
     borderRadius: 10,

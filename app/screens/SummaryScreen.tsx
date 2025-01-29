@@ -1,7 +1,12 @@
 import React from 'react';
-import { Image, View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
+import { Image, View, Text, StyleSheet, Linking, TouchableOpacity, ScrollView} from 'react-native';
 
 export default function SummaryScreen({ navigation }) {
+
+  const openYouTubeLink = (url) => {
+    Linking.openURL(url).catch((err) => console.error('An error occurred', err));
+  };
+
   return (
     <ScrollView>
     <View style={styles.container}>
@@ -76,17 +81,38 @@ export default function SummaryScreen({ navigation }) {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ flexDirection: 'row', marginTop: 30, alignItems: 'center', justifyContent: 'center' }}
         >
-          <View style={[styles.megaCard, {marginLeft: 20}]}>
-            <Text>Placeholder</Text>
-          </View>
+         {/* First image - Sleep video */}
+         <TouchableOpacity
+          style={[styles.megaCard, { marginLeft: 20 }]}
+          onPress={() => openYouTubeLink('https://www.youtube.com/watch?v=nm1TxQj9IsQ')}
+         >
+           <Image
+            source={require("../../assets/images/sleepPlaceholder.png")}
+            style={{ width: 320, height: 180, right: 10, resizeMode: "contain" }}
+           />
+          </TouchableOpacity>
 
-          <View style={styles.megaCard}>
-            <Text>Placeholder 2</Text>
-          </View>
+         {/* Second image - Workout video */}
+         <TouchableOpacity
+          style={styles.megaCard}
+          onPress={() => openYouTubeLink('https://www.youtube.com/watch?v=aJFiGC13xIw')}
+         >
+            <Image
+            source={require("../../assets/images/workoutPlaceholder.png")}
+            style={{ width: 320, height: 180, right:10, resizeMode: "contain" }}
+            />
+          </TouchableOpacity>
 
-          <View style={styles.megaCard}>
-            <Text>Placeholder 3</Text>
-          </View>
+         {/* Third image - Stress video */}
+         <TouchableOpacity
+          style={styles.megaCard}
+          onPress={() => openYouTubeLink('https://www.youtube.com/watch?v=o18I23HCQtE')}
+         >
+            <Image
+            source={require("../../assets/images/stressPlaceholder.png")}
+            style={{ width: 320, height: 180, right: 10, resizeMode: "contain" }}
+            />
+          </TouchableOpacity>
       
         </ScrollView>
 
@@ -131,13 +157,13 @@ const styles = StyleSheet.create({
     width: 300,
     height: 160,
     backgroundColor: 'white',
-    padding: 15,
     marginRight: 20,
     borderRadius: 15,
     shadowColor: '#000',
     shadowOffset: { width: -2, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 3,
+    overflow: 'hidden',
   },
   miniCard: {
     width: '32%',
