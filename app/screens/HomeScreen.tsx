@@ -189,7 +189,7 @@ export default function HomeScreen({navigation}) {
           <Text style={styles.date}>{currentDate}</Text>
         </View>
 
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginVertical: 30}}>
         <View style={styles.coreInfo}>
           <Text style={[styles.coreTitle, {paddingTop: 0}]}>STEPS</Text>
           <Text style={[styles.coreStat, {color: 'rgb(0, 200, 100)',}]}>{movementData.steps}</Text>
@@ -222,18 +222,37 @@ export default function HomeScreen({navigation}) {
         </View>
         </View>
 
-        <Text style={styles.cardTitle}>Daily Overview</Text>
+        <Text style={styles.cardTitle}>Start Tracking</Text>
 
-        <View style={styles.miniCard}>
-          <Text style={styles.keyCardTitle}>Walking</Text>
-          <Text style={styles.keyCardValue}>{movementData.steps} steps</Text>
-        </View>
+       <ScrollView 
+        horizontal 
+        pagingEnabled 
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ flexDirection: 'row', marginTop: 10, alignItems: 'center', justifyContent: 'center' }}
+        >
+         {/* First image - Start Activity */}
+         <TouchableOpacity
+          style={[styles.megaCard, { marginLeft: 20 }]}
+          onPress={() => navigation.navigate('ActivityScreen')}
+         >
+           <Image
+            source={require("../../assets/images/sleepPlaceholder.png")}
+            style={{ width: 320, height: 180, right: 10, resizeMode: "contain" }}
+           />
+          </TouchableOpacity>
 
-        <View style={styles.miniCard}>
-          <Text style={styles.keyCardTitle}>Sleep</Text>
-          <Text style={styles.keyCardValue}>7hr 24min</Text>
-        </View>
-
+          {/* Second image - Start Tracking Sleep */}
+          <TouchableOpacity
+          style={[styles.megaCard, { marginLeft: 20 }]}
+          onPress={() => navigation.navigate('SleepScreen')}
+         >
+           <Image
+            source={require("../../assets/images/sleepPlaceholder.png")}
+            style={{ width: 320, height: 180, right: 10, resizeMode: "contain" }}
+           />
+          </TouchableOpacity>
+        
+        </ScrollView>
 
         <View style={styles.modalHeader}>
           <Text style={[styles.cardTitle, {marginTop:40}]}>Body Balance</Text>
@@ -411,15 +430,13 @@ const styles = StyleSheet.create({
     color: 'rgb(0, 128, 128)',
   },
   day: {
-    fontSize: 26,
+    fontSize: 34,
     color: 'rgb(0, 80, 80)',
     fontWeight: '800',
     fontFamily: 'Avenir',
-    marginTop: 10,
+    marginTop: 15,
   },
   date: {
-    marginBottom: 20,
-    paddingLeft: 4,
     fontSize: 14,
     color: 'rgb(110, 119, 131)',
     fontWeight: '500',
@@ -433,7 +450,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '900',
     color: 'rgb(0, 80, 80)',
-    paddingTop: 8,
+    paddingTop: 15,
   },
   coreStat:{
     fontSize: 20,
@@ -444,7 +461,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     position: 'relative',
-    marginBottom: 20,
     transform: [{translateY: -10}],
   },
   ring: {
@@ -518,43 +534,56 @@ const styles = StyleSheet.create({
     marginTop: 4,
     color: 'rgb(0, 128, 128)',
   },
-    // Modal styling
-    modalHeader: { 
-      flexDirection: 'row', 
-      alignItems: 'center' 
-    },
-    modalOverlay: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.4)', // Semi-transparent background
-    },
-    modalContent: {
-      width: 300,
-      padding: 20,
-      backgroundColor: '#fff',
-      borderRadius: 15,
-      position: 'relative',
-    },
-    closeButton: {
-      position: 'absolute',
-      top: 10,
-      right: 10,
-    },
-    modalTitle: {
-      fontFamily: 'Avenir',
-      fontSize: 18,
-      fontWeight: '800',
-      textAlign: 'center',
-      color: '#008080',
-      marginBottom: 10,
-    },
-    modalParagraph: {
-      fontSize: 14,
-      fontFamily: 'Avenir',
-      fontWeight: 500,
-      color: '#444',
-      justifyContent: 'center',
-      textAlign: 'center',
-    },
+  megaCard: {
+    width: 300,
+    height: 160,
+    backgroundColor: 'white',
+    marginRight: 20,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: -2, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 3,
+    overflow: 'hidden',
+  },
+
+  // Modal styling
+  modalHeader: { 
+    flexDirection: 'row', 
+    alignItems: 'center' 
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)', // Semi-transparent background
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    position: 'relative',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
+  modalTitle: {
+    fontFamily: 'Avenir',
+    fontSize: 18,
+    fontWeight: '800',
+    textAlign: 'center',
+    color: '#008080',
+    marginBottom: 10,
+  },
+  modalParagraph: {
+    fontSize: 14,
+    fontFamily: 'Avenir',
+    fontWeight: 500,
+    color: '#444',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
 });
