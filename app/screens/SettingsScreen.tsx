@@ -22,46 +22,46 @@ export default function ProfileScreen() {
 
       {/* Personal Details Setting */}
       <View style={{flexDirection: 'row'}}>
-      <View style={styles.settingCube}></View>
-      <View style={{flexDirection: 'row'}}>
+      <View style={styles.settingCube}><Icon name="profile" size={25} color="rgba(0, 80, 80, 0.65)" style={{top: 6}}/></View>
+      <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
       <Text style={styles.settingHeader}>Personal Details</Text>
-      <Icon name="right" size={25} color="rgba(0, 80, 80, 0.65)" style={{top: 25, left: 118}}/>
+      <Icon name="right" size={15} color="rgba(0, 80, 80, 0.65)" style={{top: 28}}/>
       </View>
       </View>
 
       {/* Personal Details Setting */}
       <View style={{flexDirection: 'row'}}>
-      <View style={styles.settingCube}></View>
-      <View style={{flexDirection: 'row'}}>
+      <View style={styles.settingCube}><Icon name="staro" size={25} color="rgba(0, 80, 80, 0.65)" style={{top: 6}}/></View>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
       <Text style={styles.settingHeader}>Goals</Text>
-      <Icon name="right" size={25} color="rgba(0, 80, 80, 0.65)" style={{top: 25, left: 90}}/>
+      <Icon name="right" size={15} color="rgba(0, 80, 80, 0.65)" style={{top: 28}}/>
       </View>
       </View>
 
       {/* Personal Details Setting */}
       <View style={{flexDirection: 'row'}}>
-      <View style={styles.settingCube}></View>
-      <View style={{flexDirection: 'row'}}>
+      <View style={styles.settingCube}><Icon name="notification" size={25} color="rgba(0, 80, 80, 0.65)" style={{top: 6}}/></View>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
       <Text style={styles.settingHeader}>Notifications</Text>
-      <Icon name="right" size={25} color="rgba(0, 80, 80, 0.65)" style={{top: 25, left: 90}}/>
+      <Icon name="right" size={15} color="rgba(0, 80, 80, 0.65)" style={{top: 28}}/>
       </View>
       </View>
 
       {/* Personal Details Setting */}
       <View style={{flexDirection: 'row'}}>
-      <View style={styles.settingCube}></View>
-      <View style={{flexDirection: 'row'}}>
+      <View style={styles.settingCube}><Icon name="infocircleo" size={25} color="rgba(0, 80, 80, 0.65)" style={{top: 6}}/></View>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
       <Text style={styles.settingHeader}>Help & Support</Text>
-      <Icon name="right" size={25} color="rgba(0, 80, 80, 0.65)" style={{top: 25, left: 90}}/>
+      <Icon name="right" size={15} color="rgba(0, 80, 80, 0.65)" style={{top: 28}}/>
       </View>
       </View>
 
       {/* Personal Details Setting */}
       <View style={{flexDirection: 'row'}}>
-      <View style={styles.settingCube}></View>
-      <View style={{flexDirection: 'row'}}>
+      <View style={styles.settingCube}><Icon name="book" size={25} color="rgba(0, 80, 80, 0.65)" style={{top: 6}}/></View>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
       <Text style={styles.settingHeader}>Terms & Policies</Text>
-      <Icon name="right" size={25} color="rgba(0, 80, 80, 0.65)" style={{top: 25, left: 90}}/>
+      <Icon name="right" size={15} color="rgba(0, 80, 80, 0.65)" style={{top: 28}}/>
       </View>
       </View>
 
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   settingCube: {
     width: 40,
     height: 40,
-    backgroundColor: 'rgb(222, 225, 230)',
+    backgroundColor: 'rgba(222, 225, 230, 0.35)',
     borderRadius: 8,
     marginRight: 20,
     alignItems: 'center',

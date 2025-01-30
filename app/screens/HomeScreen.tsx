@@ -5,6 +5,8 @@ import Svg, { Circle } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/AntDesign'
 import * as Location from 'expo-location';
 import { Pedometer, Accelerometer } from 'expo-sensors';
+import SleepScreen from './Summary/SleepScreen';
+import ActivityScreen from './Summary/ActivityScreen';
 
 export default function HomeScreen({navigation}) {
 
@@ -249,7 +251,7 @@ export default function HomeScreen({navigation}) {
           <View style={{ alignItems: 'center' }}>
           <TouchableOpacity
           style={[styles.megaCard, { marginLeft: 35 }]}
-          onPress={() => navigation.navigate('ActivityScreen')}
+          onPress={() => navigation.navigate('Summary', { screen: 'ActivityScreen' })}
           >
             <Image
             source={require("../../assets/images/homeActivityPlaceholder.png")}
@@ -263,7 +265,7 @@ export default function HomeScreen({navigation}) {
           <View style={{ alignItems: 'center' }}>
           <TouchableOpacity
           style={[styles.megaCard, { marginLeft: 10 }]}
-          onPress={() => navigation.navigate('SleepScreen')}
+          onPress={() => navigation.navigate('Summary', { screen: 'SleepScreen' })}
          >
            <Image
             source={require("../../assets/images/homeSleepPlaceholder.png")}
@@ -531,7 +533,7 @@ const styles = StyleSheet.create({
   keyCard: {
     fontFamily: 'Futura',
     width: '22.5%',
-    height: 100,
+    height: 110,
     backgroundColor: 'white',
     alignItems: 'center',
     borderRadius: 10,
@@ -553,7 +555,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Avenir',
     fontSize: 20,
     fontWeight: '700',
-    marginTop: 4,
+    paddingTop: 5,
     color: 'rgb(0, 128, 128)',
   },
   megaCard: {
@@ -616,12 +618,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   miniLogo: {
-    width: 40, 
-    height: 40, 
-    resizeMode: "contain",
+    width: 35, 
+    height: 35, 
+    overflow: 'visible',
     shadowColor: 'rgb(83, 83, 83)',
-    shadowOffset: { width: -1, height: 1.5 },
+    shadowOffset: { width: -2, height: 2 },
     shadowOpacity: 0.8,
-    shadowRadius: 1,
+    shadowRadius: 2,
   }
 });
