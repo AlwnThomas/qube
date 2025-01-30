@@ -15,50 +15,53 @@ export default function HomeScreen({navigation}) {
 
   useEffect(() => {
     const requestPermission = async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === 'granted') {
+      const isPedometerAvailable = await Pedometer.isAvailableAsync(); // Check if pedometer is available
+      if (isPedometerAvailable) {
         setPermissionGranted(true);
       } else {
         setPermissionGranted(false);
-        alert("Permission for step tracking is required.");
+        alert("Pedometer is not available on this device.");
       }
     };
-
-    // Request permission
+  
     requestPermission();
+  }, []);  
 
-    if (permissionGranted) {
-      // Start pedometer and accelerometer updates
-      const pedometerSubscription = Pedometer.watchStepCount((result) => {
-        setStepCount(result.steps);
-      });
-
-      const accelerometerSubscription = Accelerometer.addListener(accelerometerData => {
-        setAcceleration(accelerometerData); // Update accelerometer data
-      });
-
-      // Cleanup on unmount
-      return () => {
-        pedometerSubscription.remove();
-        accelerometerSubscription.remove();
-      };
-    }
-  }, [permissionGranted]);
+  // Request permission
+  useEffect(() => {
+    if (!permissionGranted) return;
+    
+    let pedometerSubscription = Pedometer.watchStepCount((result) => {
+      setStepCount(result.steps);
+    });
+    
+    let accelerometerSubscription = Accelerometer.addListener(accelerometerData => {
+      setAcceleration(accelerometerData);
+    });
+    
+    return () => {
+      pedometerSubscription?.remove();
+      accelerometerSubscription?.remove();
+    };
+  }, [permissionGranted]);    
 
   // Function to filter steps using accelerometer data
-  const filterPhoneMovement = () => {
-    const threshold = 10; // Example threshold value for detecting significant movement
-
-    // Calculate the magnitude of the accelerometer data
+  const handleStepUpdate = (result) => {
     const magnitude = Math.sqrt(acceleration.x ** 2 + acceleration.y ** 2 + acceleration.z ** 2);
-
-    // If the magnitude of movement is above the threshold, it's considered a proper step
+    const threshold = 10;
+  
     if (magnitude > threshold) {
-      return true; // Consider it a valid step
+      setStepCount(result.steps);
     }
-
-    return false; // Ignore this movement
   };
+  
+  useEffect(() => {
+    if (!permissionGranted) return;
+    
+    let pedometerSubscription = Pedometer.watchStepCount(handleStepUpdate);
+  
+    return () => pedometerSubscription?.remove();
+  }, [permissionGranted, acceleration]);  
 
   const [selectedTab, setSelectedTab] = useState('Stats'); 
 
@@ -170,18 +173,18 @@ export default function HomeScreen({navigation}) {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.tab, selectedTab === 'Sleep' && styles.activeTab]}
+          style={[styles.tab, selectedTab === 'Recover' && styles.activeTab]}
           onPress={() => {
-            setSelectedTab('Sleep');
+            setSelectedTab('Recover');
             navigation.navigate('RecoveryScreen'); // Navigates to the Recovery screen
           }}
         >
           <Text style={styles.tabText}>Recover</Text>
-          {selectedTab === 'Sleep' && <View style={styles.activeTabLine} />}
+          {selectedTab === 'Recover' && <View style={styles.activeTabLine} />}
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={styles.scrollView} nestedScrollEnabled={true}>
 
       <View style={{ paddingHorizontal: 20, marginTop: 10 }}>
         <View>
@@ -238,35 +241,41 @@ export default function HomeScreen({navigation}) {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
         flexDirection: 'row', 
-        marginTop: 10, 
+        marginTop: 20, 
         alignItems: 'center', 
         justifyContent: 'center',}}
         >
-         {/* First image - Start Activity */}
-         <TouchableOpacity
+          {/* First image - Start Activity */}
+          <View style={{ alignItems: 'center' }}>
+          <TouchableOpacity
           style={[styles.megaCard, { marginLeft: 35 }]}
           onPress={() => navigation.navigate('ActivityScreen')}
-         >
-           <Image
+          >
+            <Image
             source={require("../../assets/images/homeActivityPlaceholder.png")}
-            style={{ width: 320, height: 180, right: 10, resizeMode: 'cover' }}
-           />
+            style={{ width: 320, height: 180, right: 10, bottom: 0, resizeMode: 'cover' }}
+            />
           </TouchableOpacity>
+          <Text style={styles.trackingText}>Activity Tracking</Text>
+          </View>
 
           {/* Second image - Start Tracking Sleep */}
+          <View style={{ alignItems: 'center' }}>
           <TouchableOpacity
           style={[styles.megaCard, { marginLeft: 10 }]}
           onPress={() => navigation.navigate('SleepScreen')}
          >
            <Image
             source={require("../../assets/images/homeSleepPlaceholder.png")}
-            style={{ width: 320, height: 180, right: 10, resizeMode: 'cover' }}
+            style={{ width: 320, height: 180, right: 10, bottom: 20, resizeMode: 'cover' }}
            />
           </TouchableOpacity>
+          <Text style={styles.trackingText}>Sleep Tracking</Text>
+          </View>
         
         </ScrollView>
 
-        <View style={{ paddingHorizontal: 20, marginTop: 10 }}>
+        <View style={{ paddingHorizontal: 20, marginTop: 0 }}>
         <View style={styles.modalHeader}>
           <Text style={[styles.cardTitle, {marginTop:40}]}>Body Balance</Text>
           {/* Touchable Button with Icon */}
@@ -304,7 +313,7 @@ export default function HomeScreen({navigation}) {
           <View style={styles.keyCard}>
             <Image
             source={require("../../assets/images/kcalsLogo.png")}
-            style={{ width: 40, height: 40, resizeMode: "contain" }}
+            style={styles.miniLogo}
             />
             <Text style={styles.keyCardValue}>1950</Text>
             <Text style={[styles.keyCardTitle, {fontSize: 12}]}>Kcals</Text>
@@ -313,7 +322,7 @@ export default function HomeScreen({navigation}) {
           <View style={styles.keyCard}>
             <Image
             source={require("../../assets/images/moonLogo.png")}
-            style={{ width: 36, height: 36, resizeMode: "contain" }}
+            style={[styles.miniLogo, { width: 36, height: 36}]}
             />
             <Text style={styles.keyCardValue}>98%</Text>
             <Text style={[styles.keyCardTitle, {fontSize: 12}]}>Sleep</Text>
@@ -322,7 +331,7 @@ export default function HomeScreen({navigation}) {
           <View style={styles.keyCard}>
             <Image
             source={require("../../assets/images/hrvLogo.png")}
-            style={{ width: 40, height: 40, resizeMode: "contain" }}
+            style={styles.miniLogo}
             />
             <Text style={styles.keyCardValue}>105</Text>
             <Text style={[styles.keyCardTitle, {fontSize: 12}]}>HRV</Text>            
@@ -331,7 +340,7 @@ export default function HomeScreen({navigation}) {
           <View style={styles.keyCard}>
             <Image
             source={require("../../assets/images/rhrLogo.png")}
-            style={{ width: 38, height: 38, resizeMode: "contain" }}
+            style={[styles.miniLogo,{ width: 38, height: 38}]}
             />
             <Text style={styles.keyCardValue}>68</Text>
             <Text style={[styles.keyCardTitle, {fontSize: 12}]}>RHR</Text>
@@ -559,6 +568,13 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     overflow: 'hidden',
   },
+  trackingText: {
+    marginTop: 10,
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'rgb(110, 119, 131)',
+    textAlign: 'center',
+  },  
 
   // Modal styling
   modalHeader: { 
@@ -599,4 +615,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center',
   },
+  miniLogo: {
+    width: 40, 
+    height: 40, 
+    resizeMode: "contain",
+    shadowColor: 'rgb(83, 83, 83)',
+    shadowOffset: { width: -1, height: 1.5 },
+    shadowOpacity: 0.8,
+    shadowRadius: 1,
+  }
 });
