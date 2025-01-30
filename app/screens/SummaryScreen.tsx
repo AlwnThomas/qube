@@ -77,13 +77,12 @@ export default function SummaryScreen({ navigation }) {
 
        <ScrollView 
           horizontal 
-          pagingEnabled 
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ flexDirection: 'row', marginTop: 30, alignItems: 'center', justifyContent: 'center' }}
         >
          {/* First image - Sleep video */}
          <TouchableOpacity
-          style={[styles.megaCard, { marginLeft: 20 }]}
+          style={[styles.megaCard, { marginLeft: 35 }]}
           onPress={() => openYouTubeLink('https://www.youtube.com/watch?v=nm1TxQj9IsQ')}
          >
            <Image
@@ -157,7 +156,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 160,
     backgroundColor: 'white',
-    marginRight: 20,
+    marginRight: 30,
     borderRadius: 15,
     shadowColor: '#000',
     shadowOffset: { width: -2, height: 2 },

@@ -183,7 +183,7 @@ export default function HomeScreen({navigation}) {
 
       <ScrollView style={styles.scrollView}>
 
-      <View style={{ paddingHorizontal: 20, marginVertical: 10 }}>
+      <View style={{ paddingHorizontal: 20, marginTop: 10 }}>
         <View>
           <Text style={styles.day}>{currentDay}</Text>
           <Text style={styles.date}>{currentDate}</Text>
@@ -222,38 +222,51 @@ export default function HomeScreen({navigation}) {
         </View>
         </View>
 
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text style={styles.cardTitle}>Start Tracking</Text>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Summary')}>
+        <Text style={[styles.keyCardTitle, {top: 10}]}>see all <Icon name="rightcircleo" size={12} color="rgb(0, 80, 80)" /></Text>
+        </TouchableOpacity>
+        </View>
+
+        </View>
 
        <ScrollView 
         horizontal 
         pagingEnabled 
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ flexDirection: 'row', marginTop: 10, alignItems: 'center', justifyContent: 'center' }}
+        contentContainerStyle={{
+        flexDirection: 'row', 
+        marginTop: 10, 
+        alignItems: 'center', 
+        justifyContent: 'center',}}
         >
          {/* First image - Start Activity */}
          <TouchableOpacity
-          style={[styles.megaCard, { marginLeft: 20 }]}
+          style={[styles.megaCard, { marginLeft: 35 }]}
           onPress={() => navigation.navigate('ActivityScreen')}
          >
            <Image
-            source={require("../../assets/images/sleepPlaceholder.png")}
-            style={{ width: 320, height: 180, right: 10, resizeMode: "contain" }}
+            source={require("../../assets/images/homeActivityPlaceholder.png")}
+            style={{ width: 320, height: 180, right: 10, resizeMode: 'cover' }}
            />
           </TouchableOpacity>
 
           {/* Second image - Start Tracking Sleep */}
           <TouchableOpacity
-          style={[styles.megaCard, { marginLeft: 20 }]}
+          style={[styles.megaCard, { marginLeft: 10 }]}
           onPress={() => navigation.navigate('SleepScreen')}
          >
            <Image
-            source={require("../../assets/images/sleepPlaceholder.png")}
-            style={{ width: 320, height: 180, right: 10, resizeMode: "contain" }}
+            source={require("../../assets/images/homeSleepPlaceholder.png")}
+            style={{ width: 320, height: 180, right: 10, resizeMode: 'cover' }}
            />
           </TouchableOpacity>
         
         </ScrollView>
 
+        <View style={{ paddingHorizontal: 20, marginTop: 10 }}>
         <View style={styles.modalHeader}>
           <Text style={[styles.cardTitle, {marginTop:40}]}>Body Balance</Text>
           {/* Touchable Button with Icon */}
