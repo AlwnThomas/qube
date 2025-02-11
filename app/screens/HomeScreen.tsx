@@ -251,7 +251,7 @@ export default function HomeScreen({navigation}) {
           onPress={() => navigation.navigate('Summary', { screen: 'ActivityScreen' })}
           >
             <Image
-            source={require("../../assets/images/homeActivityPlaceholder.webp")}
+            source={require("../../assets/images/homeActivityPlaceholder.png")}
             style={{ width: 320, height: 180, right: 10, bottom: 0, resizeMode: 'cover' }}
             />
           </TouchableOpacity>
