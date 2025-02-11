@@ -3,10 +3,7 @@ import { View, Text, Modal, StyleSheet, ScrollView, Dimensions, TouchableOpacity
 import { LineChart } from 'react-native-chart-kit';
 import Svg, { Circle } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/AntDesign'
-import * as Location from 'expo-location';
 import { Pedometer, Accelerometer } from 'expo-sensors';
-import SleepScreen from './Summary/SleepScreen';
-import ActivityScreen from './Summary/ActivityScreen';
 
 export default function HomeScreen({navigation}) {
 
@@ -254,7 +251,7 @@ export default function HomeScreen({navigation}) {
           onPress={() => navigation.navigate('Summary', { screen: 'ActivityScreen' })}
           >
             <Image
-            source={require("../../assets/images/homeActivityPlaceholder.png")}
+            source={require("../../assets/images/homeActivityPlaceholder.webp")}
             style={{ width: 320, height: 180, right: 10, bottom: 0, resizeMode: 'cover' }}
             />
           </TouchableOpacity>

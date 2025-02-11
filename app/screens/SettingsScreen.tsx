@@ -146,14 +146,14 @@ const styles = StyleSheet.create({
   },
   signoutCard: {
     width: '100%',
-    backgroundColor: 'rgb(247, 249, 252)',
+    backgroundColor: 'rgba(0, 140, 140, 0.5)',
     textAlign: 'center',
     textAlignVertical: 'center',
     marginTop: 30,
     borderRadius: 20,
     shadowColor: '#000',
-    shadowOffset: { width: -2, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOffset: { width: -3, height: 3 },
+    shadowOpacity: 0.5,
     shadowRadius: 5,
     elevation: 2, // For Android
   },
